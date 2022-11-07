@@ -39,6 +39,11 @@ public:
     bool supprimerEmployes(int);
     bool modifierEmployes(int,QString,QString,QString,QString);
 
+    //++++++++++ LES METIERS ++++++++++
+    QSqlQueryModel* RechercheEmployes(QString);
+    QSqlQueryModel *trier();
+
+
 private:
     int idE;
     QString nomE,prenomE,adresse,telephone,e_mail;
