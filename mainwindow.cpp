@@ -92,3 +92,21 @@ void MainWindow::on_pb_modifier_clicked()
                       QObject::tr("modification non effectuée.\n"
                                   "Click Cancel to exit."), QMessageBox::Cancel);
 }
+void MainWindow::on_pb_load_name_clicked()
+{ Employes E1;
+   ui->tri_table->setModel(E1.afficherEmployes());
+}
+
+void MainWindow::on_pb_search_clicked()
+{
+    Employes E2;
+    QString nomS=ui->le_nom_search->text();
+    ui->tri_table->setModel(E2.RechercheEmployes(nomS));
+
+}
+
+void MainWindow::on_pb_sort_clicked()
+{
+    Employes Et;
+    ui->tri_table->setModel(Et.trier());
+}
