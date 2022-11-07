@@ -105,3 +105,41 @@ bool Employes::modifierEmployes(int idE,QString adresse,QString telephone,QStrin
     query.bindValue(":prime",prime);
     return query.exec();
 }
+
+//+++++++++++++++++++++ Les Métiers ++++++++++++++++++++++++++++++
+
+QSqlQueryModel *Employes::RechercheEmployes(QString a)
+{
+    QSqlQueryModel * model= new QSqlQueryModel();
+       model->setQuery("select * from employes where nomE like'%"+a+"%' ");
+       model->setHeaderData(0, Qt::Horizontal,QObject:: tr("Identifiant"));
+       model->setHeaderData(1, Qt::Horizontal,QObject:: tr("Nom"));
+       model->setHeaderData(2, Qt::Horizontal,QObject:: tr("Prenom"));
+       model->setHeaderData(3, Qt::Horizontal,QObject:: tr("Adresse"));
+       model->setHeaderData(4, Qt::Horizontal,QObject:: tr("Telephone"));
+       model->setHeaderData(5, Qt::Horizontal,QObject:: tr("E_mail"));
+       model->setHeaderData(6, Qt::Horizontal,QObject:: tr("Date_embauche"));
+       model->setHeaderData(7, Qt::Horizontal,QObject:: tr("Salaire"));
+       model->setHeaderData(8, Qt::Horizontal,QObject:: tr("Prime"));
+       model->setHeaderData(9, Qt::Horizontal,QObject:: tr("Designation"));
+           return model;
+}
+
+QSqlQueryModel *Employes::trier()
+{
+    QSqlQueryModel * model= new QSqlQueryModel();
+
+    model->setQuery("select * from employes order by nomE asc");
+    model->setHeaderData(0, Qt::Horizontal,QObject:: tr("Identifiant"));
+    model->setHeaderData(1, Qt::Horizontal,QObject:: tr("Nom"));
+    model->setHeaderData(2, Qt::Horizontal,QObject:: tr("Prenom"));
+    model->setHeaderData(3, Qt::Horizontal,QObject:: tr("Adresse"));
+    model->setHeaderData(4, Qt::Horizontal,QObject:: tr("Telephone"));
+    model->setHeaderData(5, Qt::Horizontal,QObject:: tr("E_mail"));
+    model->setHeaderData(6, Qt::Horizontal,QObject:: tr("Date_embauche"));
+    model->setHeaderData(7, Qt::Horizontal,QObject:: tr("Salaire"));
+    model->setHeaderData(8, Qt::Horizontal,QObject:: tr("Prime"));
+    model->setHeaderData(9, Qt::Horizontal,QObject:: tr("Designation"));
+        return model;
+
+}
