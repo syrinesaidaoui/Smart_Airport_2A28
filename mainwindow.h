@@ -24,6 +24,11 @@ private slots:
 
     void on_pb_modifier_clicked();
 
+    void on_pb_load_name_clicked();
+
+    void on_pb_search_clicked();
+
+    void on_pb_sort_clicked();
 private:
     Ui::MainWindow *ui;
     Employes Em;
