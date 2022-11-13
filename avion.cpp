@@ -3,23 +3,37 @@
 #include<QtDebug>
 #include<QObject>
 #include <QSqlQueryModel>
-
-avion::avion()
-{
- marque="";Num=0 ; vitesse = 0 ;consom=0; prix_achat=0; nb_reparation = 0 ; nb_p_changer = 0;etat="" ;
-
+#include <QPdfWriter>
+#include <QPainter>
+#include <QDesktopServices>
+#include <QPrinter>
+#include <QFileDialog>
+#include <QTextDocument>
+#include <QSqlQuery>
+#include <iostream>
+#include <QTextStream>
+#define STR_EQUAL 1
+using namespace std;
+avion::avion(){
+    marque="";
+    Num=0 ;
+    vitesse = 0 ;
+    consom=0;
+    prix_achat=0;
+    nb_reparation = 0 ;
+    nb_p_changer = 0;
+    etat="";
 }
 
-avion::avion(int Num,int vitesse ,int nb_reparation,int nb_p_changer ,QString marque,float consom,float prix_achat,QString etat )
-{
-this->marque=marque;
-this->Num=Num;
-this->vitesse=vitesse;
-this->consom=consom;
-this->prix_achat=prix_achat;
-this->nb_reparation=nb_reparation;
-this->nb_p_changer=nb_p_changer;
-this->etat=etat;
+avion::avion(int Num,int vitesse ,int nb_reparation,int nb_p_changer ,QString marque,float consom,float prix_achat,QString etat ){
+    this->marque=marque;
+    this->Num=Num;
+    this->vitesse=vitesse;
+    this->consom=consom;
+    this->prix_achat=prix_achat;
+    this->nb_reparation=nb_reparation;
+    this->nb_p_changer=nb_p_changer;
+    this->etat=etat;
 }
 int avion::getNum()
 {
@@ -163,7 +177,6 @@ QSqlQueryModel* avion::recherche_ID(int Num)
     QString res=QString ::number(Num);
 
        QSqlQueryModel *model=new QSqlQueryModel();
-               model->setQuery("select * from joueur where ID_JOUEUR ='"+res+"'");
 
                model->setQuery("SELECT* FROM AVIONS where NUM_AVION ='"+res+"'");
                model->setHeaderData(0, Qt::Horizontal, QObject::tr("NUM_AVION"));
@@ -205,9 +218,9 @@ QSqlQueryModel* avion::recherche_etat(QString etat)
 QSqlQueryModel* avion::recherche_MARQUE(QString marque)
 {
     QSqlQueryModel *model=new QSqlQueryModel();
-            model->setQuery("select * from AVIONS where ETAT ='"+marque+"'");
+            model->setQuery("select * from AVIONS where MARQUE ='"+marque+"'");
 
-            model->setHeaderData(0, Qt::Horizontal, QObject::tr("NUM_AVION"));
+           model->setHeaderData(0, Qt::Horizontal, QObject::tr("NUM_AVION"));
            model->setHeaderData(1, Qt::Horizontal, QObject::tr("VITESSE"));
            model->setHeaderData(2, Qt::Horizontal, QObject::tr("NB_REPARATION"));
            model->setHeaderData(3, Qt::Horizontal, QObject::tr("NB_P_CHANGER"));
@@ -221,17 +234,110 @@ QSqlQueryModel* avion::recherche_MARQUE(QString marque)
 }
 
 
-QSqlQueryModel* avion::tri_num(int Num)
+QSqlQueryModel* avion::tri_Num()
 {
+
     QSqlQueryModel *model=new QSqlQueryModel();
-            model->setQuery("select * from JOUEUR order by ID_Joueur");
-            model->setHeaderData(0,Qt::Horizontal,QObject::tr("id"));
-            model->setHeaderData(1,Qt::Horizontal,QObject::tr("nom"));
-            model->setHeaderData(2,Qt::Horizontal,QObject::tr("prenom"));
-            model->setHeaderData(3,Qt::Horizontal,QObject::tr("age"));
-            model->setHeaderData(4,Qt::Horizontal,QObject::tr("nationallite"));
-            model->setHeaderData(5,Qt::Horizontal,QObject::tr("num"));
+            model->setQuery("select * from AVIONS order by NUM_AVION");
+            model->setHeaderData(0, Qt::Horizontal, QObject::tr("NUM_AVION"));
+           model->setHeaderData(1, Qt::Horizontal, QObject::tr("VITESSE"));
+           model->setHeaderData(2, Qt::Horizontal, QObject::tr("NB_REPARATION"));
+           model->setHeaderData(3, Qt::Horizontal, QObject::tr("NB_P_CHANGER"));
+           model->setHeaderData(4, Qt::Horizontal, QObject::tr("MARQUE"));
+           model->setHeaderData(5, Qt::Horizontal, QObject::tr("CONSOMATION"));
+           model->setHeaderData(6, Qt::Horizontal, QObject::tr("PRIX_ACHAT"));
+           model->setHeaderData(7, Qt::Horizontal, QObject::tr("ETAT"));
+
 
    return model;
 
 }
+
+QSqlQueryModel * avion::tri_Etat()
+{
+    QSqlQueryModel *model=new QSqlQueryModel();
+    model->setQuery("SELECT * FROM AVIONS ORDER BY ETAT ASC");
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("NUM_AVION"));
+   model->setHeaderData(1, Qt::Horizontal, QObject::tr("VITESSE"));
+   model->setHeaderData(2, Qt::Horizontal, QObject::tr("NB_REPARATION"));
+   model->setHeaderData(3, Qt::Horizontal, QObject::tr("NB_P_CHANGER"));
+   model->setHeaderData(4, Qt::Horizontal, QObject::tr("MARQUE"));
+   model->setHeaderData(5, Qt::Horizontal, QObject::tr("CONSOMATION"));
+   model->setHeaderData(6, Qt::Horizontal, QObject::tr("PRIX_ACHAT"));
+   model->setHeaderData(7, Qt::Horizontal, QObject::tr("ETAT"));
+    return model;
+}
+
+QSqlQueryModel * avion::tri_vitesse()
+{
+    QSqlQueryModel *model=new QSqlQueryModel();
+     model->setQuery("SELECT * FROM AVIONS ORDER BY VITESSE ");
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("NUM_AVION"));
+   model->setHeaderData(1, Qt::Horizontal, QObject::tr("VITESSE"));
+   model->setHeaderData(2, Qt::Horizontal, QObject::tr("NB_REPARATION"));
+   model->setHeaderData(3, Qt::Horizontal, QObject::tr("NB_P_CHANGER"));
+   model->setHeaderData(4, Qt::Horizontal, QObject::tr("MARQUE"));
+   model->setHeaderData(5, Qt::Horizontal, QObject::tr("CONSOMATION"));
+   model->setHeaderData(6, Qt::Horizontal, QObject::tr("PRIX_ACHAT"));
+   model->setHeaderData(7, Qt::Horizontal, QObject::tr("ETAT"));
+    return model;
+}
+
+
+
+
+  int avion::alerte()
+{
+    QSqlQuery query;
+    int i=0;
+    QString testing;
+
+    query.prepare(QString("SELECT ETAT FROM AVIONS"));
+    query.exec();
+    QString panne="PANNE";
+    while(query.next()){
+
+        cout<<"etat de la ligne "<<query.value(0).toString().toStdString()<<"  ";
+        cout<<(QString::compare(query.value(0).toString(), panne, Qt::CaseInsensitive)== STR_EQUAL)<<endl;
+
+        if(QString::compare(query.value(0).toString(), panne, Qt::CaseInsensitive)== STR_EQUAL)
+        {
+            i++;
+        }
+    }
+
+    cout<<"valeur de i "<<i<<endl;
+
+    return i;
+}
+
+
+
+ void avion::creation_pdf()
+ {
+     QString fileName = QFileDialog::getSaveFileName((QWidget* )0, "Export PDF", QString(), "*.pdf");
+       if (QFileInfo(fileName).suffix().isEmpty())
+           { fileName.append(".pdf"); }
+
+       QPrinter printer(QPrinter::PrinterResolution);
+       printer.setOutputFormat(QPrinter::PdfFormat);
+       printer.setPaperSize(QPrinter::A4);
+       printer.setOutputFileName(fileName);
+
+       QTextDocument doc;
+       QSqlQuery q;
+       q.prepare("SELECT * FROM CITOYEN ");
+       q.exec();
+       QString pdf="<br> <h1  style='color:blue'>LISTE DES AVIONS  <br></h1>\n <br> <table>  <tr>  <th>NUM_AVION  </th> <th>VITESSE  </th> <th>NB_REPARATION  </th><th>NB_P_CHANGER  </th><th>MARQUE  </th><th>CONSOMATION </th><th>PRIX_ACHAT </th><th>ETAT </th> </tr>" ;
+   //br traja ll star oel tr tzidlek colonne th tzidlek ligne h1 asghrr size o akbr size h6 //
+
+       while ( q.next())
+           {
+
+           pdf= pdf+ " <br> <tr> <td>"+ q.value(0).toString()+" " + q.value(1).toString() +"</td>   <td>" +q.value(2).toString() +" <td>" +q.value(3).toString() +" <td>" +q.value(4).toString() +" <td>" +q.value(5).toString() +"  <td>"  +q.value(6).toString() +" <td>" +q.value(7).toString() +" <td>" +q.value(8).toString() +"  "" " "</td> </td>" ;
+       }
+       doc.setHtml(pdf);
+       doc.setPageSize(printer.pageRect().size()); // This is necessary if you want to hide the page number
+       doc.print(&printer);
+ }
+

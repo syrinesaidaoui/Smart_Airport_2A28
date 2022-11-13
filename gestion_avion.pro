@@ -1,10 +1,15 @@
-QT       += core gui sql
+QT +=core gui sql printsupport multimedia network
+QT +=widgets multimedia
+QT += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
 CONFIG += console
 
+QT += printsupport
+TARGET = gestion_avion
+TEMPLATE = app
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -19,13 +24,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     avion.cpp \
     connection.cpp \
+    exportexcelobject.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    smtp.cpp
 
 HEADERS += \
     avion.h \
     connection.h \
-    mainwindow.h
+    exportexcelobject.h \
+    mainwindow.h \
+    smtp.h
 
 FORMS += \
     mainwindow.ui
