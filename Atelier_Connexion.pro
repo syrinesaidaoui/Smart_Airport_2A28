@@ -5,7 +5,10 @@
 #-------------------------------------------------
 
 QT       += core gui sql
-
+QT       += printsupport
+QT       += core gui charts
+QT       += core gui sql network multimedia multimediawidgets charts printsupport widgets axcontainer
+QT += multimedia multimediawidgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Atelier_Connexion
@@ -25,12 +28,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    camera.cpp \
     employes.cpp \
         main.cpp \
         mainwindow.cpp \
     connection.cpp
 
 HEADERS += \
+    camera.h \
     employes.h \
         mainwindow.h \
     connection.h
@@ -42,3 +47,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    icon/resources.qrc

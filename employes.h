@@ -2,6 +2,10 @@
 #define EMPLOYES_H
 #include <QString>
 #include <QSqlQueryModel>
+#include<QtCharts>
+#include<QChartView>
+#include<QPieSeries>
+#include<QPieSlice>
 class Employes
 {
 public:
@@ -42,7 +46,7 @@ public:
     //++++++++++ LES METIERS ++++++++++
     QSqlQueryModel* RechercheEmployes(QString);
     QSqlQueryModel *trier();
-
+    QChartView *statistiqueEmployes();
 
 private:
     int idE;

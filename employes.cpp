@@ -24,7 +24,8 @@ Employes::Employes(int idE,QString nomE,QString prenomE,QString adresse,QString 
     this->designation=designation;
 }
 
-//++++++++++ Les GETTERs ++++++++++
+//+++++++++++++++++++++ Les GETTERs ++++++++++++++++++++++++++++++++
+
 int Employes::getIDE(){return idE; }
 QString Employes::getNomE(){return nomE;}
 QString Employes::getPrenomE(){return prenomE;}
@@ -36,7 +37,8 @@ QString Employes::getSalaire(){return salaire;}
 QString Employes::getPrime(){return prime;}
 QString Employes::getDesignation(){return designation;}
 
-//++++++++++ Les SETTERs ++++++++++
+//+++++++++++++++++++++++ Les SETTERs ++++++++++++++++++++++++++++++
+
 void Employes::setIDE(int idE){this->idE=idE;}
 void Employes::setNomE(QString nomE){this->nomE=nomE;}
 void Employes::setPenomE(QString prenomE){this->prenomE=prenomE;}
@@ -48,7 +50,8 @@ void Employes::setSalaire(QString salaire){this->salaire=salaire;}
 void Employes::setPrime(QString prime){this->prime=prime;}
 void Employes::setDesignation(QString designation){this->designation=designation;}
 
-//++++++++++ Les CRUDs ++++++++++
+//+++++++++++++++++++++++ Les CRUDs ++++++++++++++++++++++++++++++++
+
 bool Employes::ajouterEmployes()
 {
     QSqlQuery query;
@@ -97,7 +100,7 @@ return model;
 bool Employes::modifierEmployes(int idE,QString adresse,QString telephone,QString salaire,QString prime)
 {
     QSqlQuery query;
-    query.prepare("update employes set adresse=:adresse,telephone=:telephone,salaire=:salaire,prime=:prime where idE=idE");
+    query.prepare("update employes set adresse=:adresse,telephone=:telephone,salaire=:salaire,prime=:prime where idE=:idE");
     query.bindValue(":idE",idE);
     query.bindValue(":adresse",adresse);
     query.bindValue(":telephone",telephone);
@@ -142,4 +145,47 @@ QSqlQueryModel *Employes::trier()
     model->setHeaderData(9, Qt::Horizontal,QObject:: tr("Designation"));
         return model;
 
+}
+
+QChartView* Employes::statistiqueEmployes()
+{
+        int row_count = 0;
+        int row_count1 = 0;
+
+                QSqlQuery query,query1;
+
+                query.prepare("SELECT * FROM employes where SALAIRE>=2000");
+                query.exec();
+                while(query.next())
+                    row_count++;
+
+                query1.prepare("SELECT * FROM employes where SALAIRE<2000");
+                query1.exec();
+                while(query1.next())
+                    row_count1++;
+
+               // qDebug()<<"row1="<<row_count<<row_count1;
+
+        QPieSeries *series = new QPieSeries();
+        series->append("Des Employes ayant un salaire>=2000 dt", row_count);
+        series->append("Des Employes ayant un salaire<2000 dt", row_count1);
+
+        //pour slider les employes ayant un salaire>=2000dt
+        QPieSlice *slice= series->slices().at(0);
+        slice->setExploded(true);
+        slice->setLabelVisible(true);
+        slice->setPen((QPen(Qt::white)));
+
+        QChart *chart = new QChart();
+        chart->addSeries(series);
+        chart->setTitle("STATISTIQUE DES SALAIRES");
+        chart->legend()->setAlignment(Qt::AlignRight);
+        chart->legend()->setBackgroundVisible(true);
+        chart->legend()->setBrush(QBrush(QColor(128, 128, 128, 128)));
+        chart->legend()->setPen(QPen(QColor(192, 192, 192, 192)));
+        series->setLabelsVisible();
+
+        QChartView *chartView = new QChartView(chart);
+        chartView->setRenderHint(QPainter::Antialiasing);
+        return chartView;
 }
