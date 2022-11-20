@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1055</width>
+    <height>732</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>140</y>
+     <width>541</width>
+     <height>341</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Tw Cen MT Condensed Extra Bold</family>
+     <pointsize>-1</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QGroupBox {
+    border: 1px solid gray;
+    border-color: rgb(180, 255, 255);
+    margin-top: 23px;
+    font-size: 25px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 5px 200px;
+    background-color: rgb(120, 200, 205);
+    color: rgb(255, 255, 255);
+}</string>
+   </property>
+   <property name="title">
+    <string>Login</string>
+   </property>
+   <widget class="QLineEdit" name="Nom_PRENOM">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>70</y>
+      <width>221</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit{
+border: 2px solid rgb(76,84,140);
+border-radius: 10px;
+color: #FFF;
+padding-left:60px;
+padding-right:20px;
+background-color:rgb(50, 170, 192)
+}
+QLineEdit:hover{
+border:2px sold ;
+	color: rgb(255, 0, 0);
+}
+QLineEdit:focus{
+border:20px sold rgb(85, 255, 255); 
+background-color:rgb(131, 131, 131);
+}
+</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>70</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Tw Cen MT Condensed Extra Bold</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Username</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>140</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Tw Cen MT Condensed Extra Bold</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Password</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pb_connect">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>220</y>
+      <width>112</width>
+      <height>34</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+color: white;
+background-color:rgb(20, 120, 162);
+border-width: 1px;
+border-color: #339;
+border-style: solid;
+border-radius: 7;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Connecter</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="MOT_DE_PASSE">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>130</y>
+      <width>221</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit{
+border: 2px solid rgb(76,84,140);
+border-radius: 10px;
+color: #FFF;
+padding-left:60px;
+padding-right:20px;
+background-color:rgb(50, 170, 192)
+}
+QLineEdit:hover{
+border:2px sold ;
+	color: rgb(255, 0, 0);
+}
+QLineEdit:focus{
+border:20px sold rgb(85, 255, 255); 
+background-color:rgb(131, 131, 131);
+}
+</string>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Password</enum>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -2,16 +2,17 @@
 #include "connection.h"
 #include <QApplication>
 #include <QMessageBox>
+#include "dialog.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     connection c;
     bool teste=c.createconnection();
-    MainWindow w;
+    Dialog d;
     if(teste)
     {
-    w.show();
+    d.show();
     QMessageBox::information(nullptr,QObject::tr("data base is open"),QObject::tr("connection successful.\n" "click Cancel to exit."), QMessageBox::Cancel);
     }
     else

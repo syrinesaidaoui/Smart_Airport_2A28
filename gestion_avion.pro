@@ -2,6 +2,7 @@ QT +=core gui sql printsupport multimedia network
 QT +=widgets multimedia
 QT += network
 
+QT       += core gui sql charts
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -24,20 +25,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     avion.cpp \
     connection.cpp \
+    dialog.cpp \
     exportexcelobject.cpp \
+    login.cpp \
     main.cpp \
     mainwindow.cpp \
+    notification.cpp \
     smtp.cpp
 
 HEADERS += \
     avion.h \
     connection.h \
+    dialog.h \
     exportexcelobject.h \
+    login.h \
     mainwindow.h \
+    notification.h \
     smtp.h
 
 FORMS += \
-    mainwindow.ui
+    dialog.ui \
+    mainwindow.ui \
+    notification.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

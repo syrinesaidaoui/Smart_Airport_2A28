@@ -17,17 +17,23 @@
 #include <QtNetwork>
 #include <QAbstractSocket>
 #include "exportexcelobject.h"
-
+#include <cstdlib>
+#include "login.h"
+#include "notification.h"
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    connect(ui->sendBtn, SIGNAL(clicked()),this, SLOT(sendMail()));
+    connect(ui->exitBtn, SIGNAL(clicked()),this, SLOT(close()));
+    connect(ui->browseBtn, SIGNAL(clicked()), this, SLOT(browse()));
     ui->le_Num->setValidator(new QIntValidator(0,999,this));
+    ui->le_nb_p_changer->setValidator(new QIntValidator(0,6,this));
+   ui->le_nb_reparation->setValidator(new QIntValidator(0,20,this));
     //ui->le_vitesse->setValidator(new QIntValidator(0,920,this));
-    ui->tab_avion->setModel(a.afficher());
-      ui->stackedWidget->setCurrentIndex(1);
-
+    //ui->tab_avion->setModel(a.afficher());
+     // ui->stackedWidget->setCurrentIndex(1);
 }
 
 
@@ -35,7 +41,41 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-////////////////////////////////////////////////Connect
+void MainWindow::browse()
+{
+    files.clear();
+
+    QFileDialog dialog(this);
+    dialog.setDirectory(QDir::homePath());
+    dialog.setFileMode(QFileDialog::ExistingFiles);
+
+    if (dialog.exec())
+        files = dialog.selectedFiles();
+
+    QString fileListString;
+    foreach(QString file, files)
+        fileListString.append( "\"" + QFileInfo(file).fileName() + "\" " );
+
+    ui->file->setText( fileListString );
+
+}
+void MainWindow::sendMail()
+{
+    Smtp* smtp = new Smtp(ui->uname->text(), ui->paswd->text(), ui->server->text(), ui->port->text().toInt());
+    connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
+
+    if( !files.isEmpty() )
+        smtp->sendMail(ui->uname->text(), ui->rcpt->text() , ui->subject->text(),ui->msg->toPlainText(), files );
+    else
+        smtp->sendMail(ui->uname->text(), ui->rcpt->text() , ui->subject->text(),ui->msg->toPlainText());
+}
+void MainWindow::mailSent(QString status)
+{
+    if(status == "Message sent")
+        QMessageBox::warning( 0, tr( "Qt Simple SMTP client" ), tr( "Message sent!\n\n" ) );
+}
+
+
 
 void MainWindow::on_pushConnect_clicked(){
 
@@ -57,10 +97,6 @@ void MainWindow::on_pushConnect_clicked(){
 }
 
 
-
-
-
-
 //////////////////////////////////////////////////////crud
 
 void MainWindow::on_LE_AJOUT_clicked()
@@ -69,10 +105,10 @@ void MainWindow::on_LE_AJOUT_clicked()
     int vitesse=ui->le_vitesse->text().toInt();
     int nb_reparation=ui->le_nb_reparation->text().toInt();
     int nb_p_changer=ui->le_nb_p_changer->text().toInt();
-    QString marque=ui->le_marque->text();
+    QString marque = ui->comboBox_marque->currentText();
     float consom=ui->le_consom->text().toFloat();
     float prix_achat=ui->le_prix_achat->text().toFloat();
-    QString etat=ui->le_etat->text();
+    QString etat = ui->comboBox_ETAT->currentText();
  avion a(Num,vitesse,nb_reparation,nb_p_changer,marque,consom,prix_achat,etat);
  bool test=a.ajouter();
 
@@ -118,10 +154,10 @@ void MainWindow::on_bt_modif_clicked()
     int vitesse=ui->le_vitesse->text().toInt();
     int nb_reparation=ui->le_nb_reparation->text().toInt();
     int nb_p_changer=ui->le_nb_p_changer->text().toInt();
-    QString marque=ui->le_marque->text();
+     QString marque = ui->comboBox_marque->currentText();
     float consom=ui->le_consom->text().toFloat();
     float prix_achat=ui->le_prix_achat->text().toFloat();
-    QString etat=ui->le_etat->text();
+   QString etat = ui->comboBox_ETAT->currentText();
 
  avion a(Num,vitesse,nb_reparation,nb_p_changer,marque,consom,prix_achat,etat);
  bool test=a.modifier();
@@ -158,75 +194,36 @@ void MainWindow::on_bt_modif_clicked()
 
 
 
+void MainWindow::on_Search_objet_cursorPositionChanged(const QString &arg1)
+{
+     ui->tab_recherche->setModel(a.recherche(arg1));
+}
+void MainWindow::on_lineEdit_textChanged(const QString &arg1)
+{
+    ui->tab_recherche->setModel(atmp.recherche(arg1));
 
+}
 
-
-
-
-void MainWindow::on_bt_rech_Num_clicked()
-    {
-       int Num=ui->chercher_Num->text().toInt();
-              {  if (Num==0) {
-                    QMessageBox::information(this, tr("Empty Field"),
-                        tr("Please enter a Number."));
-                    return;
-                } else {
-                ui->tab_recherche->setModel(atmp.recherche_ID(Num));
-            }}
+void MainWindow::on_trii_clicked()
+{
+    switch (ui->comboBox_trii->currentIndex()) {
+    case 0:
+        ui->tab_recherche->setModel(atmp.tri_Num());
+        break;
+    case 1:
+        ui->tab_recherche->setModel(atmp.tri_vitesse());
+        break;
+    case 2:
+          ui->tab_recherche->setModel(atmp.tri_MARQUE());
+        break;
     }
 
-
-
-
-void MainWindow::on_bt_rech_ETAT_clicked()
- {
-         QString etat=ui->chercher_etat->text();
-              {  if (etat==0) {
-                    QMessageBox::information(this, tr("Empty Field"),
-                        tr("Please enter a Number."));
-                    return;
-                } else {
-                ui->tab_recherche->setModel(atmp.recherche_etat(etat));
-            }}
-    }
-
-
-
-void MainWindow::on_bt_rech_MARQUE_clicked()
-{
-
-            QString marque=ui->chercher_marque->text();
-                 {  if (marque==0) {
-                       QMessageBox::information(this, tr("Empty Field"),
-                           tr("Please enter a Number."));
-                       return;
-                   } else {
-                   ui->tab_recherche->setModel(atmp.recherche_MARQUE(marque));
-               }}
 }
-
-
-
-void MainWindow::on_bt_tri_num_clicked()
-{
-    ui->tab_recherche->setModel(atmp.tri_Num());
- }
-void MainWindow::on_bt_tri_VITESSE_clicked()
-{
-     ui->tab_recherche->setModel(atmp.tri_vitesse());
-}
-
-
-void MainWindow::on_etat_clicked()
-{
-     ui->tab_recherche->setModel(atmp.tri_Etat());
-}
-
 
 
 void MainWindow::on_PDF_clicked()
 {
-    QString strStream;
+  QString strStream;
             strStream = QFileDialog::getSaveFileName((QWidget* )0, "Export PDF", QString(), "*.pdf");
                 if (QFileInfo(strStream).suffix().isEmpty())
                     { strStream.append(".pdf"); }
@@ -282,7 +279,8 @@ void MainWindow::on_PDF_clicked()
 }
 
 
-void MainWindow::on_pb_mail_clicked()
+
+/*void MainWindow::on_pb_mail_clicked()
     {
      Smtp* smtp = new Smtp("ghaith.elbenna@esprit.tn", "211JMT8242", "smtp.gmail.com", 465);
      connect(smtp, SIGNAL(status(QString)), this, SLOT(mailSent(QString)));
@@ -293,7 +291,7 @@ void MainWindow::on_pb_mail_clicked()
      smtp->sendMail("ghaith.elbenna@esprit.tn", a , b,c);
     }
 
-
+*/
 
 void MainWindow::on_alerte_clicked()
 {
@@ -301,7 +299,13 @@ void MainWindow::on_alerte_clicked()
                 {
                     QString notif=QString::number(a.alerte())+" etat panne .\n""Click Ok to exit.";
                     QMessageBox::warning(nullptr, QObject::tr("Alerte"),notif, QMessageBox::Ok);
-                }
+
+                    //notification notification;
+                    //notification.setModal(true);
+                    //notification.exec();
+                     Notification =new notification(this);
+                     Notification->show();
+    }
         else QMessageBox::information(nullptr, QObject::tr("OK"), QObject::tr("etat non panne  \n""Click Ok to exit."), QMessageBox::Ok);
 }
 
@@ -321,3 +325,85 @@ obj.addField(6, tr("PRIX_ACHAT"), "FLOAT");
 obj.addField(7, tr("ETAT"), "char(20)");
 obj.export2Excel();
 }
+
+void MainWindow::on_bt_sup_tout_clicked()
+{
+    bool test = a.supprimerTout();
+    QMessageBox msgBox;
+
+    if(test)
+    {
+        msgBox.setText("Suppression avec succes.");
+    ui->tab_avion->setModel(a.afficher());
+
+    }
+    else
+        msgBox.setText("Echec de suppression");
+    msgBox.exec();
+}
+
+
+void MainWindow::on_pb_ajou_utilisateur_clicked()
+{
+
+    QString nomPrenom=ui->AJOUTER_NOM_PRENOM->text();
+    QString mp1=ui->AJOUTER_mot_de_Passe->text();
+    QString mp2=ui->AJOUTER_mot_de_Passe2->text();
+
+    login user1(nomPrenom,mp1);
+    bool test=user1.createuser();
+    if(mp1!=mp2)
+        test=0;
+    if(test)
+    {
+        ui->tab_utilisateur->setModel(user1.afficher());
+
+
+        QMessageBox::information(this,"ok","ajout effectué");
+    }
+    else
+        QMessageBox::warning(this,"not ok","ajout non effectué");
+}
+
+void MainWindow::on_pb_modif_utilisateur_clicked()
+{
+    login l;
+    l.setusername(ui->AJOUTER_NOM_PRENOM->text());
+    bool test=l.supprimer(l.getusername());
+
+    if(ui->AJOUTER_NOM_PRENOM->text()==NULL)
+        test=0;
+    if(test)
+    {
+         QMessageBox::information(this," ok","suppression effectué");
+         ui->tab_utilisateur->setModel(l.afficher());
+         //ui->comboBox3->setModel(l.afficher());
+    }
+    else
+    QMessageBox::warning(this,"not ok","suppression non effectué");
+}
+
+
+void MainWindow::on_tab_utilisateur_activated(const QModelIndex &index)
+{
+    QString username=ui->tab_utilisateur->model()->data(index).toString();
+    QSqlQuery qry;
+    qry.prepare("SELECT* from USER1 where username='"+username+"'");
+    if(qry.exec())
+        {
+            while (qry.next())
+                {
+                  ui->AJOUTER_NOM_PRENOM->setText(qry.value(0).toString());
+                  ui->AJOUTER_NOM_PRENOM->setText(qry.value(1).toString());
+                }
+        }
+}
+
+
+
+
+
+
+
+
+

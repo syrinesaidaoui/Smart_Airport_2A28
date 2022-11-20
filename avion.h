@@ -4,6 +4,7 @@
 #include <QSqlQueryModel>
 #include <QSqlQuery>
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 
 class avion
@@ -26,6 +27,9 @@ public:
     void setmarque(QString);
      void setetat(QString);
     void setconsom(float);
+
+
+
     void setprix_achat(float);
     bool ajouter();
     QSqlQueryModel* afficher();
@@ -36,11 +40,12 @@ public:
     QSqlQueryModel *recherche_ID(int);
     QSqlQueryModel *recherche_etat(QString );
     QSqlQueryModel *recherche_MARQUE(QString );
-
+/////////////////////////////
+QSqlQueryModel * recherche(QString);
     ////////////////////////////////////tri
 
     QSqlQueryModel *tri_Num();
-    QSqlQueryModel *tri_Etat();
+    QSqlQueryModel *tri_MARQUE();
     QSqlQueryModel *tri_vitesse();
 
     //////////////////////////////////alerte
@@ -49,6 +54,8 @@ public:
     void creation_pdf();
     ////////////////////////////
      bool login();
+     //////////////////////////////////SUP TOUT
+     bool supprimerTout();
 
 private:
     QString marque;
