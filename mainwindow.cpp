@@ -310,21 +310,7 @@ void MainWindow::on_alerte_clicked()
 }
 
 
-void MainWindow::on_EXPORT_EXCEL_clicked()
-{QString fileName = QFileDialog::getSaveFileName(this, tr("Excel file"), qApp->applicationDirPath (),
-                                                 tr("Excel Files (*.xls)"));
-      QString sheetName="test";
-ExportExcelObject obj(fileName, sheetName, ui->tab_avion);
-obj.addField(0, tr("Num"), "int");
-obj.addField(1, tr("VITESSE"), "int");
-obj.addField(2, tr("NB_REPARATION"), "int");
-obj.addField(3, tr("NB_P_CHANGER"), "int");
-obj.addField(4, tr("MARQUE"), "char(20)");
-obj.addField(5, tr("CONSOMATION"), "FLOAT");
-obj.addField(6, tr("PRIX_ACHAT"), "FLOAT");
-obj.addField(7, tr("ETAT"), "char(20)");
-obj.export2Excel();
-}
+
 
 void MainWindow::on_bt_sup_tout_clicked()
 {

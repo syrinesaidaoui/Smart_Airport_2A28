@@ -39,7 +39,7 @@ private slots:
 
 
 
-    void on_EXPORT_EXCEL_clicked();
+
 
     void on_bt_sup_tout_clicked();
 

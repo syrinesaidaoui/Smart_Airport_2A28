@@ -26,7 +26,6 @@ SOURCES += \
     avion.cpp \
     connection.cpp \
     dialog.cpp \
-    exportexcelobject.cpp \
     login.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -37,7 +36,6 @@ HEADERS += \
     avion.h \
     connection.h \
     dialog.h \
-    exportexcelobject.h \
     login.h \
     mainwindow.h \
     notification.h \
