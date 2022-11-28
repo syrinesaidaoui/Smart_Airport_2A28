@@ -6,6 +6,8 @@
 #include <QAbstractSocket>
 #include "login.h"
 #include "notification.h"
+#include "dialog.h"
+#include "arduino.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -67,10 +69,15 @@ private slots:
     void mailSent(QString);
     void browse();
 
-    //void on_sendBtn_clicked();
 
 
 
+
+
+
+    void on_Onn_clicked();
+
+    void on_Off_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -80,6 +87,6 @@ avion tmp;
 QStringList files;
 login user;
 notification *Notification;
-
+arduino A;
 };
 #endif // MAINWINDOW_H

@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent):
    ui->le_nb_reparation->setValidator(new QIntValidator(0,20,this));
     //ui->le_vitesse->setValidator(new QIntValidator(0,920,this));
     //ui->tab_avion->setModel(a.afficher());
-     // ui->stackedWidget->setCurrentIndex(1);
+    ui->stackedWidget->setCurrentIndex(1);
 }
 
 
@@ -305,6 +305,7 @@ void MainWindow::on_alerte_clicked()
                     //notification.exec();
                      Notification =new notification(this);
                      Notification->show();
+                      A.write_to_arduino("1");
     }
         else QMessageBox::information(nullptr, QObject::tr("OK"), QObject::tr("etat non panne  \n""Click Ok to exit."), QMessageBox::Ok);
 }
@@ -313,14 +314,14 @@ void MainWindow::on_alerte_clicked()
 
 
 void MainWindow::on_bt_sup_tout_clicked()
-{
-    bool test = a.supprimerTout();
+{avion ast;
+    bool test = ast.supprimerTout();
     QMessageBox msgBox;
 
     if(test)
     {
         msgBox.setText("Suppression avec succes.");
-    ui->tab_avion->setModel(a.afficher());
+    ui->tab_recherche->setModel(ast.afficher());
 
     }
     else
@@ -393,3 +394,21 @@ void MainWindow::on_tab_utilisateur_activated(const QModelIndex &index)
 
 
 
+/*
+void MainWindow::on_pushButton_clicked()
+{Dialog dialog;
+    MainWindow* m;
+    dialog.show();
+    m->close();
+}*/
+
+
+void MainWindow::on_Onn_clicked()
+{
+    A.write_to_arduino("1");
+}
+
+void MainWindow::on_Off_clicked()
+{
+    A.write_to_arduino("0");
+}
