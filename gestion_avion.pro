@@ -1,8 +1,24 @@
+#-------------------------------------------------
+#
+# Project created by QtCreator 2018-10-26T21:45:23
+#
+#-------------------------------------------------
 QT +=core gui sql printsupport multimedia network
 QT +=widgets multimedia
 QT += network
 QT       +=serialport
 QT       += core gui sql charts
+QT      += svg
+QT       += core gui sql
+QT       += printsupport
+QT       += core gui charts
+QT       += core gui sql network multimedia multimediawidgets charts printsupport widgets axcontainer
+QT += core gui serialport
+QT += multimedia multimediawidgets
+QT       += core gui sql printsupport multimedia multimediawidgets charts printsupport widgets axcontainer network
+QT       += core gui sql network multimedia multimediawidgets charts printsupport widgets
+QT += axcontainer
+QT += gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -27,26 +43,50 @@ SOURCES += \
     avion.cpp \
     connection.cpp \
     dialog.cpp \
+    dialog_mailing.cpp \
+    dialog_stats.cpp \
+    employes.cpp \
+    excel.cpp \
+    freeshop.cpp \
     login.cpp \
     main.cpp \
     mainwindow.cpp \
     notification.cpp \
-    smtp.cpp
+    passagers.cpp \
+    qcustomplot.cpp \
+    qrcode.cpp \
+    smtp.cpp \
+    statistiques.cpp \
+    vols.cpp
 
 HEADERS += \
     arduino.h \
     avion.h \
     connection.h \
     dialog.h \
+    dialog_mailing.h \
+    dialog_stats.h \
+    employes.h \
+    excel.h \
+    freeshop.h \
     login.h \
     mainwindow.h \
     notification.h \
-    smtp.h
+    passagers.h \
+    qcustomplot.h \
+    qrcode.h \
+    smtp.h \
+    statistiques.h \
+    vols.h \
+    webaxwidget.h
 
 FORMS += \
     dialog.ui \
+    dialog_mailing.ui \
+    dialog_stats.ui \
     mainwindow.ui \
-    notification.ui
+    notification.ui \
+    statistiques.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

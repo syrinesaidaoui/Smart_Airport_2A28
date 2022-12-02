@@ -108,8 +108,8 @@ void avion::setetat(QString etat)
      QString NB_REPARATION_string=QString::number(nb_reparation);
      QString CONSOM_string=QString::number(consom);
      QString PRIX_ACHAT_string=QString::number(prix_achat);
-           query.prepare("INSERT INTO AVIONS (NUM_AVION, VITESSE,NB_REPARATION,NB_P_CHANGER,MARQUE,CONSOMATION,PRIX_ACHAT,ETAT) "
-                         "VALUES (:NUM_AVION, :VITESSE,:NB_REPARATION,:NB_P_CHANGER,:MARQUE,:CONSOMATION,:PRIX_ACHAT,:ETAT)");
+           query.prepare("INSERT INTO AVIONS (NUM_AVION, VITESSE,NB_REPARATION,NB_P_CHANGER,MARQUE,CONSOMMATION,PRIX_ACHAT,ETAT) "
+                         "VALUES (:NUM_AVION, :VITESSE,:NB_REPARATION,:NB_P_CHANGER,:MARQUE,:CONSOMMATION,:PRIX_ACHAT,:ETAT)");
 
            query.bindValue(":NUM_AVION", Num_string);
            query.bindValue(":VITESSE", VITESSE_string);
@@ -117,7 +117,7 @@ void avion::setetat(QString etat)
            query.bindValue(":NB_P_CHANGER", NB_P_string);
            query.bindValue(":MARQUE", marque);
            query.bindValue(":PRIX_ACHAT", PRIX_ACHAT_string);
-           query.bindValue(":CONSOMATION", CONSOM_string);
+           query.bindValue(":CONSOMMATION", CONSOM_string);
            query.bindValue(":ETAT", etat);
 
           return query.exec();
@@ -143,7 +143,7 @@ QSqlQueryModel* avion::afficher(){
           model->setHeaderData(2, Qt::Horizontal, QObject::tr("NB_REPARATION"));
           model->setHeaderData(3, Qt::Horizontal, QObject::tr("NB_P_CHANGER"));
           model->setHeaderData(4, Qt::Horizontal, QObject::tr("MARQUE"));
-          model->setHeaderData(5, Qt::Horizontal, QObject::tr("CONSOMATION"));
+          model->setHeaderData(5, Qt::Horizontal, QObject::tr("CONSOMMATION"));
           model->setHeaderData(6, Qt::Horizontal, QObject::tr("PRIX_ACHAT"));
           model->setHeaderData(7, Qt::Horizontal, QObject::tr("ETAT"));
 
@@ -249,6 +249,7 @@ bool avion::supprimerTout()
           return query.exec();
 
 }
+
 
   int avion::alerte()
 {
