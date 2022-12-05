@@ -125,6 +125,7 @@ private slots:
     void sendMail();
     void mailSent(QString);
     void browse();
+    void update_labelg();
     void on_Onn_clicked();
 
     void on_Off_clicked();
@@ -156,6 +157,8 @@ private slots:
        void on_deconnexion_clicked();
 
        void on_deconnexion_2_clicked();
+       void on_OFF_ARDUINO_OS_clicked();
+       void update_label();
 /////////////////////////////////////////////////////////////:syrine
 
       void on_pb_ajouter_1_clicked();
@@ -255,6 +258,10 @@ private slots:
 
       void on_deconnexion_5_clicked();
 
+
+
+
+
 private:
     Ui::MainWindow *ui;
 avion a;
@@ -263,7 +270,7 @@ avion tmp;
 QStringList files;
 login user;
 notification *Notification;
-arduino A;
+Arduino A;
 Vols v,vo;
 QTcpSocket *socket;
 Employes Em;
@@ -276,5 +283,6 @@ freeshop F;
 statistiques *s;
 QTextDocument *document;
 int selected=0;
+QByteArray data;
 };
 #endif // MAINWINDOW_H

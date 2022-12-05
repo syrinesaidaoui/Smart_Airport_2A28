@@ -93,7 +93,7 @@
 #include <QJsonObject>
 #include <QTimer>
 #include <QEventLoop>
-
+#include <QtDebug>
 
 
 using qrcodegen::QrCode ;
@@ -105,22 +105,16 @@ MainWindow::MainWindow(QWidget *parent):
 
 
     ///***********BEGIN ARDUINO***********
-        int ret=A.connect_arduino();
-
-            switch (ret) {
-            case 0 :
-                qDebug()<<"Arduino is available and connected to : "<<A.getarduino_port_name();
-                break;
-
-            case 1 :
-                qDebug()<<"Arduino is available but not connected to : "<<A.getarduino_port_name();
-                break;
-            case -1 :
-                qDebug()<<"Arduino is not available ";
-                break;
-            }  //QObject::connect(A.getserial(),SIGNAL(readyRead()),this,SLOT(updateLabel()));
-            //QObject::connect(A.getserial(),SIGNAL(readyRead()),this,SLOT(update_label()));
-            QObject::connect(A.getserial(),SIGNAL(readyRead()),this,SLOT(concatRfid()));
+    int ret=A.connect_arduino(); // lancer la connexion à arduino
+    switch(ret){
+    case(0):qDebug()<< "arduino is available and connected to : "<< A.getarduino_port_name();
+        break;
+    case(1):qDebug() << "arduino is available but not connected to :" <<A.getarduino_port_name();
+       break;
+    case(-1):qDebug() << "arduino is not available";
+    }
+     QObject::connect(A.getserial(),SIGNAL(readyRead()),this,SLOT(update_label())); // permet de lancer
+     //le slot update_label suite à la reception du signal readyRead (reception des données).
     ///***********END ARDUINO***********
 
     ///////////////////////////////////////////////////////////////////////ghaith
@@ -178,31 +172,31 @@ void MainWindow::on_pushConnect_clicked(){
     QString mdp=ui->linemdp->text();
     if ((login=="ghaith")&&(mdp=="1")){
         ui->stackedWidget->setCurrentIndex(0);
-      QMessageBox::information(nullptr,QObject::tr("OK"),QObject::tr("conncté avec succes.\n" "click Cancel to exit."), QMessageBox::Cancel);
+      QMessageBox::information(nullptr,QObject::tr("OK"),QObject::tr("conncté avec succes bienvenue au gestion d'avion.\n" "click Cancel to exit."), QMessageBox::Cancel);
 
      }
-    else if ((login=="oumayma")&&(mdp=="1"))
+    else if ((login=="oumeyma")&&(mdp=="2"))
 
     {
        ui->stackedWidget->setCurrentIndex(1);
      QMessageBox::information(nullptr,QObject::tr("OK"),QObject::tr("conncté avec succes.\n" "click Cancel to exit."), QMessageBox::Cancel);
 
     }
-    else if ((login=="syrine")&&(mdp=="1"))
+    else if ((login=="syrine")&&(mdp=="3"))
 
     {
        ui->stackedWidget->setCurrentIndex(2);
      QMessageBox::information(nullptr,QObject::tr("OK"),QObject::tr("conncté avec succes.\n" "click Cancel to exit."), QMessageBox::Cancel);
 
     }
-    else if ((login=="yassine")&&(mdp=="1"))
+    else if ((login=="yassine")&&(mdp=="4"))
 
     {
        ui->stackedWidget->setCurrentIndex(3);
      QMessageBox::information(nullptr,QObject::tr("OK"),QObject::tr("conncté avec succes.\n" "click Cancel to exit."), QMessageBox::Cancel);
 
     }
-    else if ((login=="emmanuel")&&(mdp=="1"))
+    else if ((login=="emmanuel")&&(mdp=="5"))
 
     {
        ui->stackedWidget->setCurrentIndex(4);
@@ -443,13 +437,12 @@ void MainWindow::on_alerte_clicked()
                 {
                     QString notif=QString::number(a.alerte())+" etat panne .\n""Click Ok to exit.";
                     QMessageBox::warning(nullptr, QObject::tr("Alerte"),notif, QMessageBox::Ok);
-
                     //notification notification;
                     //notification.setModal(true);
                     //notification.exec();
                      Notification =new notification(this);
                      Notification->show();
-                      A.write_to_arduino("1");
+
     }
         else QMessageBox::information(nullptr, QObject::tr("OK"), QObject::tr("etat non panne  \n""Click Ok to exit."), QMessageBox::Ok);
 }
@@ -532,26 +525,33 @@ void MainWindow::on_tab_utilisateur_activated(const QModelIndex &index)
 
 
 
+void MainWindow::update_labelg()
+{
+    data=A.read_from_arduino();
 
+    if(data=="1")
 
+        ui->label_73->setText("ON"); // si les données reçues de arduino via la liaison série sont égales à 1
+    // alors afficher ON
 
-/*
-void MainWindow::on_pushButton_clicked()
-{Dialog dialog;
-    MainWindow* m;
-    dialog.show();
-    m->close();
-}*/
+    else if (data=="0")
+
+        ui->label_73->setText("OFF");   // si les données reçues de arduino via la liaison série sont égales à 0
+     //alors afficher ON
+}
 
 
 void MainWindow::on_Onn_clicked()
 {
     A.write_to_arduino("1");
+
 }
 
 void MainWindow::on_Off_clicked()
 {
     A.write_to_arduino("0");
+    cout<<"0";
+    QMessageBox::information(this," ok","attend 30 sec pour atteindre le buzzer");
 }
 
 void MainWindow::on_deconnexion_clicked()
@@ -860,6 +860,50 @@ void MainWindow::on_pb_act_clicked()
 }
 
 
+void MainWindow::update_label()
+{
+    QByteRef a=A.read_from_arduino()[0];
+    if (a == 'A'){
+        //data="";
+        qDebug()<<data;
+        QSqlQueryModel *model=new QSqlQueryModel();
+        model->setQuery("SELECT * FROM VOLS where NUMVOL ="+data);
+        qDebug()<<"SELECT * FROM VOLS where NUMVOL ="+data;
+        if (model->rowCount()==0){
+            A.write_to_arduino("identifiant erroné");
+            qDebug()<<"identifiant erroné";
+            data="";
+        }else{
+            QByteArray nom = model->data(model->index(0,0)).toByteArray();
+            A.write_to_arduino("   num vol "+nom);
+            qDebug()<<"num vol "<<nom;
+            QMessageBox::information(nullptr, QObject::tr("ok"),
+                        QObject::tr("porte ouvert.\n"
+                                    "Click Cancel to exit."), QMessageBox::Cancel);
+        }
+
+    }else if (a=='1' || a=='2' || a=='3' || a=='4' || a=='5' || a=='6' || a=='7' || a=='8' || a=='9' )
+       {
+       data+=a;
+       } else if (a == 'X') {
+
+       } else if (a == 'C') {
+        QMessageBox::information(nullptr, QObject::tr("distance"),
+                        QObject::tr("distance less than 10.\n"
+                                    "Click Cancel to exit."), QMessageBox::Cancel);
+       } else if (a == 'D') {
+        QMessageBox::information(nullptr, QObject::tr("distance"),
+                        QObject::tr("distance less than 10.\n"
+                                    "Click Cancel to exit."), QMessageBox::Cancel);
+       }
+
+   qDebug()<<data;
+
+}
+void MainWindow::on_OFF_ARDUINO_OS_clicked()
+{
+     A.write_to_arduino("a");
+}
 
 
 void MainWindow::on_deconnexion_2_clicked()
@@ -1486,4 +1530,8 @@ void MainWindow::on_deconnexion_5_clicked()
 {
     ui->stackedWidget->setCurrentIndex(5);
 }
+
+
+
+
 

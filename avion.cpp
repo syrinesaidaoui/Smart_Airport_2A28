@@ -12,7 +12,7 @@
 #include <QSqlQuery>
 #include <iostream>
 #include <QTextStream>
-#define STR_EQUAL 1
+#define STR_EQUAL 0
 #include <cstdlib>
 using namespace std;
 avion::avion(){
@@ -178,13 +178,13 @@ QSqlQueryModel * avion::recherche(QString res)
 
 
          QSqlQueryModel *model=new QSqlQueryModel();
-         model->setQuery("SELECT * FROM AVIONS WHERE ( NUM_AVION LIKE '%"+res+"%' OR VITESSE LIKE '%"+res+"%' OR NB_REPARATION LIKE '%"+res+"%' OR NB_P_CHANGER LIKE '%"+res+"%' OR MARQUE LIKE '%"+res+"%' OR CONSOMATION LIKE '%"+res+"%' OR PRIX_ACHAT LIKE '%"+res+"%' OR ETAT LIKE '%"+res+"%' ) ");
+         model->setQuery("SELECT * FROM AVIONS WHERE ( NUM_AVION LIKE '%"+res+"%' OR VITESSE LIKE '%"+res+"%' OR NB_REPARATION LIKE '%"+res+"%' OR NB_P_CHANGER LIKE '%"+res+"%' OR MARQUE LIKE '%"+res+"%' OR CONSOMMATION LIKE '%"+res+"%' OR PRIX_ACHAT LIKE '%"+res+"%' OR ETAT LIKE '%"+res+"%' ) ");
          model->setHeaderData(0, Qt::Horizontal, QObject::tr("NUM_AVION"));
          model->setHeaderData(1, Qt::Horizontal, QObject::tr("VITESSE"));
          model->setHeaderData(2, Qt::Horizontal, QObject::tr("NB_REPARATION"));
          model->setHeaderData(3, Qt::Horizontal, QObject::tr("NB_P_CHANGER"));
          model->setHeaderData(4, Qt::Horizontal, QObject::tr("MARQUE"));
-         model->setHeaderData(5, Qt::Horizontal, QObject::tr("CONSOMATION"));
+         model->setHeaderData(5, Qt::Horizontal, QObject::tr("CONSOMMATION"));
          model->setHeaderData(6, Qt::Horizontal, QObject::tr("PRIX_ACHAT"));
          model->setHeaderData(7, Qt::Horizontal, QObject::tr("ETAT"));
 
@@ -202,7 +202,7 @@ QSqlQueryModel* avion::tri_Num()
            model->setHeaderData(2, Qt::Horizontal, QObject::tr("NB_REPARATION"));
            model->setHeaderData(3, Qt::Horizontal, QObject::tr("NB_P_CHANGER"));
            model->setHeaderData(4, Qt::Horizontal, QObject::tr("MARQUE"));
-           model->setHeaderData(5, Qt::Horizontal, QObject::tr("CONSOMATION"));
+           model->setHeaderData(5, Qt::Horizontal, QObject::tr("CONSOMMATION"));
            model->setHeaderData(6, Qt::Horizontal, QObject::tr("PRIX_ACHAT"));
            model->setHeaderData(7, Qt::Horizontal, QObject::tr("ETAT"));
 
@@ -220,7 +220,7 @@ QSqlQueryModel * avion::tri_MARQUE()
     model->setHeaderData(2, Qt::Horizontal, QObject::tr("NB_REPARATION"));
     model->setHeaderData(3, Qt::Horizontal, QObject::tr("NB_P_CHANGER"));
     model->setHeaderData(4, Qt::Horizontal, QObject::tr("MARQUE"));
-    model->setHeaderData(5, Qt::Horizontal, QObject::tr("CONSOMATION"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("CONSOMMATION"));
     model->setHeaderData(6, Qt::Horizontal, QObject::tr("PRIX_ACHAT"));
     model->setHeaderData(7, Qt::Horizontal, QObject::tr("ETAT"));
     return model;
@@ -235,7 +235,7 @@ QSqlQueryModel * avion::tri_vitesse()
    model->setHeaderData(2, Qt::Horizontal, QObject::tr("NB_REPARATION"));
    model->setHeaderData(3, Qt::Horizontal, QObject::tr("NB_P_CHANGER"));
    model->setHeaderData(4, Qt::Horizontal, QObject::tr("MARQUE"));
-   model->setHeaderData(5, Qt::Horizontal, QObject::tr("CONSOMATION"));
+   model->setHeaderData(5, Qt::Horizontal, QObject::tr("CONSOMMATION"));
    model->setHeaderData(6, Qt::Horizontal, QObject::tr("PRIX_ACHAT"));
    model->setHeaderData(7, Qt::Horizontal, QObject::tr("ETAT"));
     return model;
